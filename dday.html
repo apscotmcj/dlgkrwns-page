@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>D-Day 계산기</title>
+</head>
+<body>
+
+<section>
+<script>
+    let now = new Date();
+
+    let yearStr = prompt("목표 연도를 입력하세요 (예: 2025)");
+    let monthStr = prompt("목표 월을 입력하세요 (예: 12)");
+    let dayStr = prompt("목표 일을 입력하세요 (예: 25)");
+
+    if (!yearStr || !monthStr || !dayStr) {
+        document.write("계산을 취소했습니다.");
+    } else {
+        let year = parseInt(yearStr);
+        let month = parseInt(monthStr);
+        let day = parseInt(dayStr);
+
+        let targetDate = new Date(year, month - 1, day);
+
+        let diffMs = targetDate.getTime() - now.getTime();
+
+        let diffDay = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffDay > 0) {
+            document.write("D-" + diffDay);
+        } else if (diffDay === 0) {
+            document.write("D-Day 입니다!");
+        } else {
+            document.write("D+" + Math.abs(diffDay));
+        }
+    }
+</script>
+</section>
+
+</body>
+</html>
