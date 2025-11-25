@@ -1,31 +1,97 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>식사 랜덤 뽑기</title>
+  <meta charset="UTF-8">
+  <title>식사 랜덤 뽑기</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #fee2e2, #dbeafe);
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .card {
+      background: #ffffff;
+      padding: 32px 40px;
+      border-radius: 18px;
+      box-shadow: 0 22px 45px rgba(15, 23, 42, 0.18);
+      text-align: center;
+      max-width: 520px;
+      width: 90%;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 12px;
+      margin: 2px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      font-size: 12px;
+      color: #4b5563;
+    }
+    .result-label {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #9ca3af;
+    }
+    .result {
+      margin-top: 4px;
+      font-size: 32px;
+      font-weight: 800;
+      color: #f97316;
+    }
+  </style>
 </head>
 <body>
 
-<section>
 <script>
-    let inputString = prompt(
-        "콤마(,)로 구분된 항목을 입력하세요.\n예: 짜장면, 짬뽕, 제육볶음",
-        "짜장면, 짬뽕, 제육볶음"
-    );
+  let inputString = prompt(
+    "콤마(,)로 구분된 항목을 입력하세요.\n예: 짜장면, 짬뽕, 제육볶음",
+    "짜장면, 짬뽕, 제육볶음"
+  );
 
-    if (!inputString) {
-        document.write("뽑기를 취소했습니다.");
-    } else {
-        let items = inputString.split(",");
+  if (!inputString) {
+    document.write(`
+      <div class="card">
+        <div class="title">식사 랜덤 뽑기</div>
+        <p class="subtitle">콤마(,)로 메뉴를 입력하면 그 중 하나를 골라 드립니다.</p>
+        <p class="subtitle">뽑기를 취소했습니다.</p>
+      </div>
+    `);
+  } else {
+    let items = inputString.split(",");
+    let cleaned = items.map(x => x.trim()).filter(x => x.length > 0);
 
-        let index = Math.floor(Math.random() * items.length);
+    let index = Math.floor(Math.random() * cleaned.length);
+    let choice = cleaned[index];
 
-        let choice = items[index].trim();
+    let pillsHtml = cleaned.map(x => `<span class="pill">${x}</span>`).join("");
 
-        document.write("오늘의 메뉴는 " + choice + " 입니다!");
-    }
+    document.write(`
+      <div class="card">
+        <div class="title">식사 랜덤 뽑기</div>
+        <p class="subtitle">입력한 후보들 중에서 무작위로 한 가지를 골라줍니다.</p>
+        <div>${pillsHtml}</div>
+        <div class="result-label">오늘의 메뉴는…</div>
+        <div class="result">${choice}</div>
+      </div>
+    `);
+  }
 </script>
-</section>
 
 </body>
 </html>

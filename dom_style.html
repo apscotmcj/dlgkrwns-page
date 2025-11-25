@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM 스타일 변환 실험</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e0f2fe, #f5d0fe);
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .card {
+      background: #ffffff;
+      padding: 32px 40px 28px;
+      border-radius: 18px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+      max-width: 640px;
+      width: 92%;
+      text-align: center;
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      color: #111827;
+    }
+    .subtitle {
+      margin: 0 0 24px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    #target {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 20px;
+      border: 2px dashed #9ca3af;
+      margin: 0 auto 24px;
+      width: 90%;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background-color: #f9fafb;
+      color: #111827;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    button {
+      padding: 10px 14px;
+      font-size: 14px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background-color: #f3f4f6;
+      cursor: pointer;
+      transition: background-color 0.15s, transform 0.1s, box-shadow 0.1s;
+    }
+    button:hover {
+      background-color: #e5e7eb;
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>DOM 스타일 변환 실험</h2>
+  <p class="subtitle">아래 버튼을 눌러 문장의 글자색 · 크기 · 배경색 · 표시 여부를 바꿔보세요.</p>
+
+  <p id="target">이 문장의 스타일을 바꿔보세요!</p>
+
+  <div class="btn-row">
+    <button onclick="changeColor()">글자색 변경 (빨강)</button>
+    <button onclick="changeSize()">크게 보기 (32px)</button>
+    <button onclick="changeBg()">배경 강조 (노랑)</button>
+    <button onclick="toggleVisibility()">숨기기 / 보이기</button>
+  </div>
+</div>
+
+<script>
+  function changeColor() {
+    document.getElementById("target").style.color = "red";
+  }
+
+  function changeSize() {
+    document.getElementById("target").style.fontSize = "32px";
+  }
+
+  function changeBg() {
+    document.getElementById("target").style.backgroundColor = "yellow";
+  }
+
+  function toggleVisibility() {
+    var obj = document.getElementById("target");
+    if (obj.style.display === "none") {
+      obj.style.display = "block";
+    } else {
+      obj.style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>

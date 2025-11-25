@@ -1,42 +1,112 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>D-Day 계산기</title>
+  <meta charset="UTF-8">
+  <title>D-Day 계산기</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #f5f3ff, #e0f2fe);
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .card {
+      background: #ffffff;
+      padding: 32px 40px;
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      text-align: center;
+      max-width: 480px;
+      width: 90%;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    .result {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .result.dday { color: #ef4444; }
+    .result.minus { color: #0ea5e9; }
+    .result.plus { color: #22c55e; }
+
+    .desc {
+      font-size: 14px;
+      color: #4b5563;
+    }
+  </style>
 </head>
 <body>
 
-<section>
 <script>
-    let now = new Date();
+  // 오늘 날짜
+  let now = new Date();
 
-    let yearStr = prompt("목표 연도를 입력하세요 (예: 2025)");
-    let monthStr = prompt("목표 월을 입력하세요 (예: 12)");
-    let dayStr = prompt("목표 일을 입력하세요 (예: 25)");
+  // 목표 날짜 입력
+  let yearStr  = prompt("목표 연도를 입력하세요 (예: 2025)");
+  let monthStr = prompt("목표 월을 입력하세요 (예: 12)");
+  let dayStr   = prompt("목표 일을 입력하세요 (예: 25)");
 
-    if (!yearStr || !monthStr || !dayStr) {
-        document.write("계산을 취소했습니다.");
+  if (!yearStr || !monthStr || !dayStr) {
+    document.write(`
+      <div class="card">
+        <div class="title">D-Day 계산기</div>
+        <p class="subtitle">목표 날짜를 입력하면 오늘 기준 D-Day를 계산합니다.</p>
+        <p class="desc">계산을 취소했습니다.</p>
+      </div>
+    `);
+  } else {
+    let year  = parseInt(yearStr);
+    let month = parseInt(monthStr);
+    let day   = parseInt(dayStr);
+
+    let targetDate = new Date(year, month - 1, day);
+
+    let diffMs  = targetDate.getTime() - now.getTime();
+    let diffDay = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    let label   = "";
+    let css     = "";
+    let message = "";
+
+    if (diffDay > 0) {
+      label   = "D-" + diffDay;
+      css     = "minus";
+      message = "목표일까지 " + diffDay + "일 남았습니다!";
+    } else if (diffDay === 0) {
+      label   = "D-Day";
+      css     = "dday";
+      message = "오늘이 바로 그 날입니다 🎉";
     } else {
-        let year = parseInt(yearStr);
-        let month = parseInt(monthStr);
-        let day = parseInt(dayStr);
-
-        let targetDate = new Date(year, month - 1, day);
-
-        let diffMs = targetDate.getTime() - now.getTime();
-
-        let diffDay = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-        if (diffDay > 0) {
-            document.write("D-" + diffDay);
-        } else if (diffDay === 0) {
-            document.write("D-Day 입니다!");
-        } else {
-            document.write("D+" + Math.abs(diffDay));
-        }
+      label   = "D+" + Math.abs(diffDay);
+      css     = "plus";
+      message = "목표일로부터 " + Math.abs(diffDay) + "일 지났습니다.";
     }
+
+    document.write(`
+      <div class="card">
+        <div class="title">D-Day 계산기</div>
+        <p class="subtitle">${year}년 ${month}월 ${day}일 기준</p>
+        <div class="result ${css}">${label}</div>
+        <p class="desc">${message}</p>
+      </div>
+    `);
+  }
 </script>
-</section>
 
 </body>
 </html>

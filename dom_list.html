@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>댓글 추가/삭제 프로그램</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 56px;
+      background: linear-gradient(180deg, #eef2ff, #f9fafb);
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .card {
+      background: #ffffff;
+      padding: 28px 32px 24px;
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+      width: 90%;
+      max-width: 640px;
+    }
+    h3 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      text-align: center;
+      color: #111827;
+    }
+    .subtitle {
+      margin: 0 0 18px;
+      font-size: 13px;
+      text-align: center;
+      color: #6b7280;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      margin: 6px 0;
+      background: #f9fafb;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.1s;
+    }
+    li span.label {
+      color: #4b5563;
+    }
+    li span.hint {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-left: 8px;
+    }
+    li:hover {
+      background: #e5f3ff;
+      box-shadow: 0 6px 10px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h3>댓글 목록</h3>
+  <p class="subtitle">페이지가 열리면 한 번 댓글을 입력할 수 있습니다. 추가된 댓글을 클릭하면 삭제돼요.</p>
+
+  <ul id="commentList"></ul>
+</div>
+
+<script>
+
+  let inputStr = prompt("댓글을 입력하세요!");
+
+
+  if (inputStr != null && inputStr.trim() !== "") {
+
+    var parent = document.getElementById("commentList");
+
+
+    var newLi = document.createElement("li");
+    newLi.innerHTML = `<span class="label">${inputStr}</span>
+                       <span class="hint">클릭하면 삭제</span>`;
+
+
+    newLi.onclick = function () {
+      var p = this.parentElement;
+      p.removeChild(this);
+    };
+
+
+    parent.appendChild(newLi);
+  }
+</script>
+
+</body>
+</html>
