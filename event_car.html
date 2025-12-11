@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>키보드 자동차</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background: radial-gradient(circle at top, #fceabb, #f8b500);
+      height: 100vh;
+      overflow: hidden;
+      border: 5px solid #e74c3c; /* 화면 경계선 */
+      position: relative;
+    }
+    h1 {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      font-size: 24px;
+      color: #c0392b;
+      text-shadow: 0 2px 4px rgba(255,255,255,0.6);
+    }
+    .hint {
+      position: absolute;
+      top: 42px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: #333;
+      background: rgba(255,255,255,0.8);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    #car {
+      position: absolute;          /* 절대 위치 필수 */
+      left: 100px;
+      top: 100px;
+      width: 80px;
+      height: 40px;
+      background: #3498db;
+      border-radius: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 24px;
+    }
+    #car::before,
+    #car::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      width: 18px;
+      height: 18px;
+      background: #2c3e50;
+      border-radius: 50%;
+    }
+    #car::before { left: 10px; }
+    #car::after  { right: 10px; }
+  </style>
+</head>
+<body>
+  <h1>키보드 자동차</h1>
+  <div class="hint">方向키(←↑→↓)로 이동해 보세요. 화면 밖으로는 나갈 수 없습니다.</div>
+
+  <div id="car">🚗</div>
+
+  <script>
+    // 1. 초기 좌표 및 설정
+    var x = 100, y = 100;      
+    var step = 10;             
+    var borderWidth = 5;       
+
+    window.onload = function () {   
+      var car = document.getElementById("car");
+      updatePosition(car);
+
+      // 2. 키보드 방향키 감지
+      window.onkeydown = function (e) {
+        var key = e.keyCode;
+        switch (key) {         // 37:Left, 38:Up, 39:Right, 40:Down
+          case 37: x -= step; break; 
+          case 38: y -= step; break; 
+          case 39: x += step; break; 
+          case 40: y += step; break; 
+          default: return;           
+        }
+
+    
+        var maxX = window.innerWidth  - borderWidth*2 - car.offsetWidth;
+        var maxY = window.innerHeight - borderWidth*2 - car.offsetHeight;
+
+        if (x < borderWidth) x = borderWidth;
+        if (y < borderWidth) y = borderWidth;
+        if (x > maxX) x = maxX;
+        if (y > maxY) y = maxY;
+
+    
+        updatePosition(car);
+      };
+    };
+
+    function updatePosition(car) {
+      car.style.left = x + "px";
+      car.style.top  = y + "px";
+    }
+  </script>
+</body>
+</html>

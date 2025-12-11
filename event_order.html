@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>스마트 피자 주문서</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #fee2e2, #e0f2fe);
+      font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 32px 40px 28px;
+      border-radius: 18px;
+      box-shadow: 0 22px 45px rgba(15, 23, 42, 0.18);
+      max-width: 640px;
+      width: 92%;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #111827;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0 0 24px;
+    }
+
+    #menu_box h4 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #111827;
+    }
+
+    .menu-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+      gap: 8px;
+    }
+
+    .menu-row:last-child {
+      border-bottom: none;
+    }
+
+    .menu-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .menu-price {
+      font-weight: 600;
+      color: #ef4444;
+      font-size: 14px;
+    }
+
+    .menu-qty {
+      width: 70px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+    }
+
+    .field {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    .total-row {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 15px;
+      color: #111827;
+    }
+
+    .total-row input {
+      width: 140px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      text-align: right;
+      font-weight: 700;
+      font-size: 15px;
+      background: #f9fafb;
+    }
+
+    .btn-wrap {
+      margin-top: 22px;
+      text-align: right;
+    }
+
+    button {
+      padding: 10px 18px;
+      font-size: 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: #10b981;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(5, 150, 105, 0.4);
+      transition: background 0.1s, transform 0.1s, box-shadow 0.1s;
+    }
+
+    button:hover {
+      background: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(5, 150, 105, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2 class="title">스마트 피자 주문서</h2>
+  <p class="subtitle">
+    메뉴(체크박스)와 수량을 변경하면 총 금액이 실시간으로 계산됩니다.<br>
+    배달 주소를 입력하지 않으면 경고창이 뜹니다.
+  </p>
+
+  <!-- onsubmit: validate 함수로 전송 제어 -->
+  <form onsubmit="return validate(event)">
+    <!-- 메뉴 박스 -->
+    <div id="menu_box">
+      <h4>메뉴 [선택]</h4>
+
+      <!-- 1. 콤비네이션 피자 -->
+      <div class="menu-row">
+        <div class="menu-left">
+          <input type="checkbox" class="menu-check" value="15000" onchange="recalc()">
+          콤비네이션 피자
+          <span class="menu-price">15,000원</span>
+        </div>
+        <input type="number" class="menu-qty" value="1" min="1"
+               onchange="recalc()" onkeyup="recalc()"> 개
+      </div>
+
+      <!-- 2. 포테이토 피자 -->
+      <div class="menu-row">
+        <div class="menu-left">
+          <input type="checkbox" class="menu-check" value="17000" onchange="recalc()">
+          포테이토 피자
+          <span class="menu-price">17,000원</span>
+        </div>
+        <input type="number" class="menu-qty" value="1" min="1"
+               onchange="recalc()" onkeyup="recalc()"> 개
+      </div>
+
+      <!-- 3. 불고기 피자 -->
+      <div class="menu-row">
+        <div class="menu-left">
+          <input type="checkbox" class="menu-check" value="18000" onchange="recalc()">
+          불고기 피자
+          <span class="menu-price">18,000원</span>
+        </div>
+        <input type="number" class="menu-qty" value="1" min="1"
+               onchange="recalc()" onkeyup="recalc()"> 개
+      </div>
+    </div>
+
+    <!-- 배달 주소 -->
+    <div class="field">
+      <label for="addr">배달 주소</label>
+      <!-- onblur: 주소 비었는지 검사 -->
+      <input type="text" id="addr" class="input-text"
+             placeholder="예: 서울시 노원구 광운로 20"
+             onblur="checkAddress()">
+    </div>
+
+    <!-- 합계 -->
+    <div class="total-row">
+      <span>총 합계 금액</span>
+      <input type="text" id="total" value="0" readonly> 원
+    </div>
+
+    <!-- 주문 버튼 -->
+    <div class="btn-wrap">
+      <button type="submit">주문하기</button>
+    </div>
+  </form>
+</div>
+
+<script>
+
+  function recalc() {
+    var total = 0;
+    var checks = document.getElementsByClassName("menu-check");
+    var qtys   = document.getElementsByClassName("menu-qty");
+
+    for (var i = 0; i < checks.length; i++) {
+      if (checks[i].checked) {
+        var price    = parseInt(checks[i].value);
+        var quantity = parseInt(qtys[i].value);
+        total += price * quantity;
+      }
+    }
+    document.getElementById("total").value = total;
+  }
+
+  
+  function checkAddress() {
+    var addrInput = document.getElementById("addr");
+    if (addrInput.value.trim() === "") {
+      alert("배달 주소를 입력해주세요.");
+      addrInput.focus();
+    }
+  }
+
+  
+  function validate(e) {
+    var total = parseInt(document.getElementById("total").value);
+
+    if (isNaN(total) || total === 0) {
+      alert("메뉴를 선택해주세요.");
+    } else {
+      alert("주문 완료! 총액: " + total + "원");
+    }
+
+
+    e.preventDefault();
+    return false;
+  }
+</script>
+
+</body>
+</html>
